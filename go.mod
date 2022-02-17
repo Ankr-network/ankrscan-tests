@@ -1,4 +1,4 @@
-module ankrscan-tests
+module github.com/Ankr-network/ankrscan-tests
 
 go 1.17
 
