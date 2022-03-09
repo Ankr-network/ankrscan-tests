@@ -1,6 +1,9 @@
 package testentity
 
-import "testing"
+import (
+	"github.com/ethereum/go-ethereum/core/types"
+	"testing"
+)
 
 import (
 	"bytes"
@@ -96,6 +99,7 @@ func GenBlock(blockchainName string, blockHeight uint64, blockHash []byte, paren
 					GasLimit:         rand.Uint64(),
 					GasUsed:          rand.Uint64(),
 					Uncles:           [][]byte{GenHash(), GenHash()},
+					LogsBloom:        GenLogsBloom(transactions),
 				},
 			},
 		},
@@ -142,6 +146,19 @@ func GenLog(logIndex uint32, dataSize int) *proto.EthLog {
 		Data:    GenBytes(dataSize),
 		Removed: false,
 	}
+}
+
+func GenLogsBloom(transactions []*proto.Transaction) []byte {
+	var bin types.Bloom
+	for _, tx := range transactions {
+		for _, log := range tx.Specific.(*proto.Transaction_EthTx).EthTx.Logs {
+			bin.Add(log.Address)
+			for _, topic := range log.Topics {
+				bin.Add(topic)
+			}
+		}
+	}
+	return bin[:]
 }
 
 func GenBlockchainName() string {
