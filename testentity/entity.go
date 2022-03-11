@@ -108,11 +108,7 @@ func GenBlock(blockchainName string, blockHeight uint64, blockHash []byte, paren
 	return block
 }
 
-func GenTx(blockchainName string, blockHeight uint64, blockHash []byte, transactionHash []byte, transactionIndex uint64, inputSize, logsCount, logsDataSize int) *proto.Transaction {
-	logs := make([]*proto.EthLog, 0)
-	for i := 0; i < logsCount; i++ {
-		logs = append(logs, GenLog(uint32(i), logsDataSize))
-	}
+func GenTxWithLogs(blockchainName string, blockHeight uint64, blockHash []byte, transactionHash []byte, transactionIndex uint64, inputSize int, logs []*proto.EthLog) *proto.Transaction {
 	return &proto.Transaction{
 		BlockchainName:   blockchainName,
 		TransactionHash:  transactionHash,
@@ -137,6 +133,14 @@ func GenTx(blockchainName string, blockHeight uint64, blockHash []byte, transact
 			},
 		},
 	}
+}
+
+func GenTx(blockchainName string, blockHeight uint64, blockHash []byte, transactionHash []byte, transactionIndex uint64, inputSize, logsCount, logsDataSize int) *proto.Transaction {
+	logs := make([]*proto.EthLog, 0)
+	for i := 0; i < logsCount; i++ {
+		logs = append(logs, GenLog(uint32(i), logsDataSize))
+	}
+	return GenTxWithLogs(blockchainName, blockHeight, blockHash, transactionHash, transactionIndex, inputSize, logs)
 }
 
 func GenLog(logIndex uint32, dataSize int) *proto.EthLog {
