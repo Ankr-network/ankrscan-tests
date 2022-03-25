@@ -174,6 +174,15 @@ func GenBlockchainName() string {
 	return strings.Join([]string{string(b), "chain"}, "")
 }
 
+func GenCurrencyName() string {
+	letters := []rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+	b := make([]rune, 3)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return strings.Join([]string{string(b), "currency"}, "")
+}
+
 func CheckBlocks(t *testing.T, initial []*proto.Block, result []*proto.Block) {
 	require.Equal(t, len(initial), len(result))
 	for i := 0; i < len(initial); i++ {
@@ -182,5 +191,15 @@ func CheckBlocks(t *testing.T, initial []*proto.Block, result []*proto.Block) {
 		require.Equal(t, common.BytesToHash(initial[i].Header.BlockHash).String(), common.BytesToHash(result[i].Header.BlockHash).String(), "index %d", i)
 		ProtoEqual(t, initial[i].Header, result[i].Header)
 		ProtoEqual(t, initial[i], result[i])
+	}
+}
+
+func GenCurrency(blockchainName string, address []byte, decimals uint64) *proto.CurrencyDetails {
+	return &proto.CurrencyDetails{
+		BlockchainName: blockchainName,
+		Address:        address,
+		Name:           GenCurrencyName(),
+		Decimals:       decimals,
+		Symbol:         GenCurrencyName(),
 	}
 }

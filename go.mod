@@ -3,7 +3,7 @@ module github.com/Ankr-network/ankrscan-tests
 go 1.17
 
 require (
-	github.com/Ankr-network/ankrscan-proto-contract v0.0.0-20220216120246-c0b037bf4b00
+	github.com/Ankr-network/ankrscan-proto-contract v0.0.0-20220325132821-1da63d6f257b
 	github.com/ethereum/go-ethereum v1.10.16
 	github.com/golang/protobuf v1.5.2
 	github.com/stretchr/testify v1.7.0
