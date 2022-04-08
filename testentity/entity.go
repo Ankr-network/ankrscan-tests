@@ -1,18 +1,16 @@
 package testentity
 
 import (
-	"github.com/ethereum/go-ethereum/core/types"
-	"testing"
-)
-
-import (
 	"bytes"
+	"encoding/hex"
 	"github.com/Ankr-network/ankrscan-proto-contract/go/proto"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core/types"
 	proto2 "github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/require"
 	"math/rand"
 	"strings"
+	"testing"
 )
 
 func ProtoEqual(t *testing.T, message1 proto2.Message, message2 proto2.Message) {
@@ -201,5 +199,13 @@ func GenCurrency(blockchainName string, address []byte, decimals uint64) *proto.
 		Name:           GenCurrencyName(),
 		Decimals:       decimals,
 		Symbol:         GenCurrencyName(),
+	}
+}
+
+func GenConsumer(blockchainName string) *proto.BlockConsumer {
+	return &proto.BlockConsumer{
+		BlockchainName: blockchainName,
+		ConsumerName:   "test-consumer",
+		UserId:         hex.EncodeToString(GenHash()),
 	}
 }
